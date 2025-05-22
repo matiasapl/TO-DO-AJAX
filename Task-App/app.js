@@ -1,6 +1,6 @@
 
 $(function() {
-    console.log("JQuery is working!");
+    let edit = false;
     loadTasks();
     $('task-results').hide();
     $('#search').keyup(function() {
@@ -33,9 +33,13 @@ $(function() {
         
         const postData = {
             name: $('#name').val(),
-            description: $('#description').val()
+            description: $('#description').val(),
+            id: $('#taskId').val()
         };
-        $.post('task-add.php', postData, function(response) {
+
+        let url = edit === false ? 'task-add.php' : 'task-edit.php';
+        
+        $.post(url, postData, function(response) {
             loadTasks();
             $('#task-form').trigger('reset');
             console.log(response);
@@ -49,14 +53,15 @@ $(function() {
         url: 'task-list.php',
         type: 'GET',
         success: function(response) {
-        console.log(response);
         let tasks = JSON.parse(response);
         let template = '';
         tasks.forEach(task => {
             template += `
             <tr TaskID="${task.id}">
             <td>${task.id}</td>
-            <td>${task.name}</td>
+            <td>
+            <a href="#" class="task-item"> ${task.name} </a>
+            </td>
             <td>${task.description}</td>
             <td>
             <button class="task-delete btn btn-danger">
@@ -79,11 +84,25 @@ $(document).on('click', '.task-delete', function() {
     
     $.post('task-delete.php', {id}, function(response) {
     loadTasks();
-    console.log(response);
         
          });
         return;
         }
 });
 
+$(document).on('click', '.task-item', function() {
+    
+    let element = $(this)[0].parentElement.parentElement;
+    let id = $(element).attr('TaskID');
+    $.post ('task-single.php', {id}, function(response) {
+    const task = JSON.parse(response);
+    $('#name').val(task.name);
+    $('#description').val(task.description);
+    $('#taskId').val(task.id);
+    edit = true;
+    
+    });
+
+});
+    
 });
