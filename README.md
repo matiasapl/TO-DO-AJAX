@@ -4,6 +4,7 @@ PROJECTO DE TO-DO CON AJAX
 HECHO COMO PROYECTO DE APRENDISAJE EN BASE A VIDEO https://www.youtube.com/watch?v=GeCNShiLdpc
 
 REQUISITOS XAMPP: APACHE Y MYSQL
+https://www.apachefriends.org/es/download.html
 
 TECNOLOGIAS AJAX
 PATRON DE DISEÑO: MVC
