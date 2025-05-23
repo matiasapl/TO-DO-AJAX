@@ -7,12 +7,11 @@ $(function() {
         if ($('#search').val()) {
                     let search = $('#search').val();
         $.ajax({
-            url: 'task-search.php',
+            url: '../TASK-APP/MODELO/task-search.php',
             type: 'POST',
             data: {search},
             success: function(response) {
                 let tasks = JSON.parse(response);
-                console.log(tasks);
                 let template = '';
                 tasks.forEach(task => {
                     template += `<li>
@@ -37,20 +36,21 @@ $(function() {
             id: $('#taskId').val()
         };
 
-        let url = edit === false ? 'task-add.php' : 'task-edit.php';
+        let url = edit === false ? '../TASK-APP/MODELO/task-add.php' : '../TASK-APP/MODELO/task-edit.php';
         
         $.post(url, postData, function(response) {
             loadTasks();
             $('#task-form').trigger('reset');
-            console.log(response);
+            
             
         });
+        edit = false;
         e.preventDefault();
     });
 
    function loadTasks() {
          $.ajax({
-        url: 'task-list.php',
+        url: '../TASK-APP/MODELO/task-list.php',
         type: 'GET',
         success: function(response) {
         let tasks = JSON.parse(response);
@@ -82,7 +82,7 @@ $(document).on('click', '.task-delete', function() {
     let element = $(this)[0].parentElement.parentElement;
     let id = $(element).attr('TaskID');
     
-    $.post('task-delete.php', {id}, function(response) {
+    $.post('../TASK-APP/MODELO/task-delete.php', {id}, function(response) {
     loadTasks();
         
          });
@@ -94,7 +94,7 @@ $(document).on('click', '.task-item', function() {
     
     let element = $(this)[0].parentElement.parentElement;
     let id = $(element).attr('TaskID');
-    $.post ('task-single.php', {id}, function(response) {
+    $.post ('../TASK-APP/MODELO/task-single.php', {id}, function(response) {
     const task = JSON.parse(response);
     $('#name').val(task.name);
     $('#description').val(task.description);
